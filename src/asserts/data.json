@@ -1,37 +1,42 @@
 [
     {
-        "id": 0,
+        "articleId": 11,
         "title": "Tesla",
         "text": "Best company",
         "currentLikes": 7,
-        "isLiked": false
+        "isLiked": false,
+        "commentsCount": 1
     },
     {
-        "id": 1,
+        "articleId": 5,
         "title": "VK",
         "text": "Messenger for children",
         "currentLikes": 2,
-        "isLiked": false
+        "isLiked": false,
+        "commentsCount": 2
     },
     {
-        "id": 2,
+        "articleId": 72,
         "title": "Me",
         "text": "Best student",
         "currentLikes": 999,
-        "isLiked": false
+        "isLiked": false,
+        "commentsCount": 0
     },
     {
-        "id": 3,
+        "articleId": 33,
         "title": "Item",
         "text": "Some other item",
         "currentLikes": 0,
-        "isLiked": false
+        "isLiked": false,
+        "commentsCount": 2
     },
     {
-        "id": 4,
+        "articleId": 16,
         "title": "Real article",
         "text": "Real text for real article",
         "currentLikes": 11,
-        "isLiked": false
+        "isLiked": false,
+        "commentsCount": 1
     }
 ]
