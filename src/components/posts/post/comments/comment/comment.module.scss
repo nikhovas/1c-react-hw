@@ -1,0 +1,11 @@
+@import "../../../../../common/styles/mixins.module";
+
+.comment {
+  @include div-style("big");
+  @include div-colors("default");
+  @include div-upper-border();
+
+  & .button {
+    @include button();
+  }
+}

@@ -1,0 +1,14 @@
+@import "../../../../common/styles/vars.module";
+@import "../../../../common/styles/mixins.module";
+
+.like {
+  @include button();
+
+  &-unpressed {
+    @include div-colors("default");
+  }
+
+  &-pressed {
+    @include div-colors("pink");
+  }
+}

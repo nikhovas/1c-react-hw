@@ -1,27 +1,39 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
+
+import Post from './components/posts/post/post';
+import NewPost from './components/posts/newPost/newPost';
+
 import styles from './app.module.scss';
-import postsFile from './asserts/data.json'
-import Post, {PostData} from './components/post/post'
+import {getComments} from "./loaders/comments";
+import {getArticles} from "./loaders/articles";
+import ArticleData from "./structs/article";
 
 function App() {
-    let posts: PostData[] = postsFile as PostData[];
+    let currentCommentId = 100
+    let newCommentIdGetter = () => {
+        currentCommentId += 1
+        return currentCommentId
+    }
+
+    const [articles, setArticles] = useState<ArticleData[]>([])
+    const [articlesLoaded, setArticlesLoaded] = useState<boolean>(false)
+    useEffect(() => {
+        getArticles().then((articles: ArticleData[]) => {
+            setArticles(articles)
+            setArticlesLoaded(true)
+        })
+    })
 
     const likeCallback = function (key: number) {
         console.log(key)
-        for (let i = 0; i < posts.length; i++) {
-            let elem = posts[i];
-            if (elem.id === key) {
-                elem.isLiked = !elem.isLiked
-                if (elem.isLiked) {
-                    elem.currentLikes += 1
-                } else {
-                    elem.currentLikes -= 1
-                }
-            }
-            posts[i] = elem
-            break
-        }
-        console.log(posts)
+    }
+
+    if (!articlesLoaded) {
+        return (
+            <div>
+                Посты загрыжаются
+            </div>
+        )
     }
 
     return (
@@ -34,9 +46,17 @@ function App() {
                 </div>
             </div>
             <div className={styles.appInternal}>
-                {posts.map(post => (
-                    <Post postData={post} likeCallback={likeCallback} key={post.id}></Post>
+                {articles.map(article => (
+                    <Post
+                        postData={article}
+                        likeCallback={likeCallback}
+                        key={article.articleId}
+                        commentsGetter={getComments}
+                        newCommentIdGetter={newCommentIdGetter}
+                    />
                 ))}
+                <NewPost>
+                </NewPost>
             </div>
         </div>
     );

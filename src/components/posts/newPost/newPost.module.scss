@@ -1,0 +1,13 @@
+@import "../../../common/styles/mixins.module";
+
+.newPost {
+  @include div-style("big");
+  @include div-colors("default");
+  @include div-default-borders("big");
+
+  @include div-inputs();
+
+  & .button {
+    @include button();
+  }
+}

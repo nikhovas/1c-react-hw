@@ -28,7 +28,7 @@ function Like(props: LikeProps) {
     }
 
     return (
-        <div className={cn('like', [isLiked ? `like-pressed`: `like-unpressed`])} onClick={likeClick}>
+        <div className={cn('like', [isLiked ? `like-pressed` : `like-unpressed`])} onClick={likeClick}>
             {count} likes
         </div>
     )
