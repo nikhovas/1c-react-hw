@@ -1,0 +1,37 @@
+.button {
+    padding: 10px;
+    border-width: 1px;
+    border-style: solid;
+    border-color: lightgrey;
+    background-color: white;
+    display: inline-block;
+    margin-top: 10px;
+}
+
+.block {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding: 10px;
+    border-width: 1px;
+    border-style: solid;
+    border-color: lightgrey;
+    border-radius: 15px;
+}
+
+.line-input {
+    display:inline-block;
+    padding:15px 10px;
+    line-height:200%;
+}
+
+.blockUpperSeparator {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding: 10px;
+    border-top-width: 2px;
+    border-bottom-width: 0;
+    border-left-width: 0;
+    border-right-width: 0;
+    border-style: solid;
+    border-color: lightgrey;
+}
