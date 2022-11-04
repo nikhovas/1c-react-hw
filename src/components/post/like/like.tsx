@@ -1,5 +1,9 @@
+import classnames from 'classnames/bind'
 import React, {useState} from "react";
-import styles from './like.module.css'
+
+import styles from './like.module.scss'
+
+const cn = classnames.bind(styles)
 
 export interface LikeProps {
     id: number
@@ -23,16 +27,8 @@ function Like(props: LikeProps) {
         }
     }
 
-    let style: React.CSSProperties = {}
-    if (isLiked) {
-        style = {
-            borderColor: "#F06292",
-            backgroundColor: "#F48FB1",
-        }
-    }
-
     return (
-        <div className={styles.like} style={style} onClick={likeClick}>
+        <div className={cn('like', [isLiked ? `like-pressed`: `like-unpressed`])} onClick={likeClick}>
             {count} likes
         </div>
     )

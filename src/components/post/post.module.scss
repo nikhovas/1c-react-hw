@@ -1,0 +1,6 @@
+@import "../../common/styles/mixins.module.scss";
+
+.post {
+    @include div-style("big");
+    @include div-colors("default");
+}

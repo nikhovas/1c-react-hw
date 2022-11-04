@@ -1,5 +1,5 @@
-import Like from "./like";
-import styles from './post.module.css'
+import Like from "./like/like";
+import styles from './post.module.scss'
 
 export interface PostData {
     id: number
@@ -13,7 +13,6 @@ export interface PostProps {
     postData: PostData
     likeCallback: (key: number) => void
 }
-
 
 function Post(props: PostProps) {
     return (

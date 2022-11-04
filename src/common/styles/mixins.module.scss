@@ -1,0 +1,31 @@
+@import 'vars.module';
+
+@mixin body-text($size) {
+  font-size: map-get($body-font-size, $size);
+}
+
+@mixin title-text($size) {
+  font-weight: bold;
+  font-size: map-get($title-font-size, $size);
+}
+
+@mixin div-style($size) {
+  margin: map-get($div-margins, $size);
+  padding: map-get($div-paddings, $size);
+  border-radius:  map-get($div-border-radius, $size);
+  border-width: 1px;
+  border-style: solid;
+
+  & h2 {
+    @include title-text($size);
+  }
+
+  & p {
+    @include body-text($size);
+  }
+}
+
+@mixin div-colors($color) {
+  background-color: map-get($background-color, $color);
+  border-color: map-get($border-color, $color);
+}

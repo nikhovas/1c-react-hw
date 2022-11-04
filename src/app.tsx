@@ -1,7 +1,7 @@
 import React from 'react';
-import './App.css';
+import styles from './app.module.scss';
 import postsFile from './asserts/data.json'
-import Post, {PostData} from './components/post'
+import Post, {PostData} from './components/post/post'
 
 function App() {
     let posts: PostData[] = postsFile as PostData[];
@@ -25,10 +25,19 @@ function App() {
     }
 
     return (
-        <div>
-            {posts.map(post => (
-                <Post postData={post} likeCallback={likeCallback} key={post.id}></Post>
-            ))}
+        <div className={styles.app}>
+            <div className={styles.side}>
+                <div className={styles.menu}>
+                    <p>
+                        There will be a menu
+                    </p>
+                </div>
+            </div>
+            <div className={styles.appInternal}>
+                {posts.map(post => (
+                    <Post postData={post} likeCallback={likeCallback} key={post.id}></Post>
+                ))}
+            </div>
         </div>
     );
 }
