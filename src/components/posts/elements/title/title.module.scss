@@ -1,0 +1,23 @@
+@import "../../../../common/styles/mixins.module";
+
+.title {
+  @include title-text("big");
+  @include div-colors("default");
+
+  .button {
+    @include button();
+  }
+
+  & input {
+    display: inline-block;
+    width: 100%;
+    box-sizing: border-box;
+    border-style: solid;
+    border-width: 1px;
+    @include title-text("big");
+    @include div-colors("default");
+    @include div-default-borders("small");
+  }
+
+  grid-area: title;
+}

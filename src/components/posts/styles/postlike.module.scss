@@ -1,0 +1,51 @@
+@import "../../../common/styles/mixins.module";
+@import "../../../common/styles/vars.module";
+
+@mixin postLike() {
+  @include div-style("big");
+  @include div-colors("default");
+  @include div-default-borders("big");
+
+  .button {
+    @include button();
+  }
+
+  display: grid;
+  grid-template-areas:
+      'title'
+      'body'
+      'additional-info'
+      'buttons';
+
+  &WithComments {
+    grid-template-areas:
+      'title'
+      'body'
+      'additional-info'
+      'buttons'
+      'comments';
+  }
+
+  grid-row-gap: 10px;
+
+  .additionalInfo {
+    grid-area: additional-info;
+    grid-auto-flow: column;
+    display: grid;
+    grid-template-rows: 1fr;
+    grid-column-gap: $default-grid-space;
+    grid-row-gap: 5px;
+    justify-content: start;
+  }
+
+  .buttons {
+    grid-area: buttons;
+    display: grid;
+    grid-auto-flow: column;
+    grid-template-rows: 1fr;
+
+    grid-column-gap: $default-grid-space;
+    grid-row-gap: 5px;
+    justify-content: start;
+  }
+}

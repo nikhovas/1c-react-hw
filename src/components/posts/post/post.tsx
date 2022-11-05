@@ -1,102 +1,75 @@
 import Like from "./like/like";
 import styles from './post.module.scss'
-import Comment from "./comments/comment/comment";
-import {useEffect, useState} from "react";
-import NewComment from "./comments/newComment/newComment";
+import {useState} from "react";
 import ArticleData from "../../../structs/article";
-import CommentData from "../../../structs/comment";
+import SmallText from "../elements/smallText/smallText";
+import PostComments from "../posts";
+import Paragraph from "../elements/paragraph/paragraph";
+import Title from "../elements/title/title";
+import classnames from "classnames/bind";
+import Sorting, {dateSort} from "../../common/sorting/sorting";
 
-export interface PostCommentsProps {
-    postData: ArticleData
-    commentsGetter: (postId: number) => Promise<CommentData[]>
-    likeCallback: (key: number) => void
-    newCommentIdGetter: () => number
-}
+const cn = classnames.bind(styles)
 
 export interface PostProps {
     postData: ArticleData
-    commentsGetter: (postId: number) => Promise<CommentData[]>
-    likeCallback: (key: number) => void
-    newCommentIdGetter: () => number
+    commentsGetter: (postId: number) => Promise<ArticleData[]>
+    deletePostCallback: (commentId: number) => (void)
+    newPostIdGetter: () => number
+    currentDepth: number
+    maxDepth: number
 }
 
-function PostComments(props: PostCommentsProps) {
-    const [comments, changeComments] = useState<CommentData[]>([])
-    const [commentsLoaded, setCommentsLoaded] = useState<boolean>(false);
-
-    const addNewCommentCallback = (commentData: CommentData) => {
-        changeComments([...comments, commentData])
-    }
-
-    const deleteCommentCallback = (commentId: number) => {
-        const newComments = comments.filter((comment) => comment.commentId !== commentId)
-        changeComments(newComments)
-    }
-
-    useEffect(() => {
-        props.commentsGetter(props.postData.articleId).then((comments: CommentData[]) => {
-            changeComments(comments)
-            setCommentsLoaded(true)
-        })
-    }, [])
-
-    if (!commentsLoaded) {
-        return (
-            <div className={styles.blockUpperSeparator}>
-                Коментарии загружаются
-            </div>
-        )
-    } else {
-        return (
-            <div>
-                {
-                    comments.map((comment: CommentData) => {
-                        return <Comment
-                            id={comment.commentId}
-                            key={comment.commentId}
-                            data={comment}
-                            deleteCommentCallback={deleteCommentCallback}
-                        />
-                    })
-                }
-                <NewComment
-                    newCommentIdGetter={props.newCommentIdGetter}
-                    addNewCommentCallback={addNewCommentCallback}
-                    articleId={props.postData.articleId}
-                />
-            </div>
-        )
-    }
-}
-
-function Post(props: PostProps) {
+function Post(
+    {postData, commentsGetter, deletePostCallback, newPostIdGetter, currentDepth, maxDepth}: PostProps
+) {
     const [areCommentsShown, setAreCommentsShown] = useState<boolean>(false);
+    const [text, setText] = useState<string>(postData.text)
+    const [title, setTitle] = useState<string>(postData.title)
+    const [sorting, setSorting] = useState<string>(dateSort.value)
+
+    const likeCallback = function (key: number) {
+        console.log(key)
+    }
 
     return (
-        <div key={props.postData.articleId} className={styles.post}>
-            <h2>{props.postData.title}</h2>
-            <p>{props.postData.text}</p>
-            <div>
+        <div key={postData.postId} className={cn('post', areCommentsShown ? ['postWithComments'] : [])}>
+            {
+                title !== "" && <Title initialText={title} newTextCallback={setTitle}/>
+            }
+            <Paragraph initialText={text} newTextCallback={setText}/>
+            <div className={styles.additionalInfo}>
+                <SmallText initialText={postData.creationDate}/>
+                <SmallText initialText={postData.author}/>
+            </div>
+            <div className={styles.buttons}>
                 <Like
-                    count={props.postData.currentLikes}
-                    id={props.postData.articleId}
-                    likeCallback={props.likeCallback}
-                    isLiked={props.postData.isLiked}
+                    count={postData.currentLikes}
+                    id={postData.postId}
+                    likeCallback={likeCallback}
+                    isLiked={postData.isLiked}
                 />
-                <div className={styles.button} onClick={() => setAreCommentsShown(!areCommentsShown)}
-                     style={{marginLeft: 10}}>
-                    {areCommentsShown ? "Скрыть комментарии" : "Показать комментарии"}
+                <div className={styles.button} onClick={() => deletePostCallback(postData.postId)}>
+                    Удалить
                 </div>
+                {
+                    currentDepth < maxDepth &&
+                    <div className={styles.button} onClick={() => setAreCommentsShown(!areCommentsShown)}>
+                        {areCommentsShown ? "Скрыть вложения" : "Показать вложения"}
+                    </div>
+                }
+                {areCommentsShown && <Sorting setSortingValue={setSorting} inputValue={sorting}/>}
             </div>
             {areCommentsShown &&
                 <PostComments
-                    postData={props.postData}
-                    commentsGetter={props.commentsGetter}
-                    newCommentIdGetter={props.newCommentIdGetter}
-                    likeCallback={props.likeCallback}
+                    parentPostId={postData.postId}
+                    commentsGetter={commentsGetter}
+                    newPostIdGetter={newPostIdGetter}
+                    sorting={sorting}
+                    currentDepth={currentDepth + 1}
+                    maxDepth={maxDepth}
                 />
             }
-
         </div>
     )
 }

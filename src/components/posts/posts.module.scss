@@ -1,0 +1,7 @@
+@import "../../common/styles/vars.module";
+
+.comments {
+  grid-area: comments;
+  display: grid;
+  grid-row-gap: $default-grid-space;
+}

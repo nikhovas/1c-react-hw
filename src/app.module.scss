@@ -2,15 +2,18 @@
 
 .app {
   display: grid;
+  grid-column-gap: 10px;
+
   @media screen and (max-width: 900px) {
     grid-template-areas:
       'menu'
+      'header'
       'content';
     grid-template-rows: 5rem auto;
-    grid-row-gap: 10px;
   }
   @media screen and (min-width: 901px) {
     grid-template-areas:
+      'menu   header'
       'menu   content';
     grid-template-columns: 12rem 1fr;
   }
@@ -25,6 +28,12 @@
   @include div-colors("default");
 }
 
-.app-internal {
+.appInternal {
   grid-area: content;
+  padding: 10px;
+}
+
+.header {
+  grid-area: header;
+  padding: 10px;
 }

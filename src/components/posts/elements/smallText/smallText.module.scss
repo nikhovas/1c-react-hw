@@ -1,0 +1,12 @@
+@import "../../../../common/styles/mixins.module";
+
+.smallText {
+    display: inline-block;
+    justify-content: center;
+    @include body-text("small");
+
+    & input {
+        @include div-colors("default");
+        @include div-default-borders("small");
+    }
+}

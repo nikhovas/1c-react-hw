@@ -1,11 +1,5 @@
-@import "../../../common/styles/mixins.module";
+@import "../styles/postlike.module";
 
 .post {
-  @include div-style("big");
-  @include div-colors("default");
-  @include div-default-borders("big");
-
-  .button {
-    @include button();
-  }
+  @include postLike();
 }

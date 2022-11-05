@@ -3,8 +3,14 @@ import ArticleData from "../structs/article";
 
 const ARTICLES_LOAD_DURATION = 1500;
 
-export async function getArticles(): Promise<ArticleData[]> {
+function selectByArticleId(totalData: ArticleData[], articleId: number) {
+    console.log(totalData)
+    return totalData.filter((comment: ArticleData) => comment.parentPostId === articleId)
+}
+
+export async function getArticles(articleId: number): Promise<ArticleData[]> {
     return new Promise(resolve => {
-        setTimeout(() => resolve(articles), ARTICLES_LOAD_DURATION)
+        const targetPosts = selectByArticleId(articles, articleId)
+        setTimeout(() => resolve(targetPosts), ARTICLES_LOAD_DURATION)
     })
 }

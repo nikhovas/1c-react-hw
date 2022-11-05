@@ -1,42 +1,114 @@
 [
     {
-        "articleId": 11,
+        "postId": 11,
+        "author": "Sofa",
+        "parentPostId": 0,
         "title": "Tesla",
         "text": "Best company",
         "currentLikes": 7,
         "isLiked": false,
-        "commentsCount": 1
+        "creationDate": "2022-05-26"
     },
     {
-        "articleId": 5,
+        "postId": 5,
+        "author": "Sofa",
+        "parentPostId": 0,
         "title": "VK",
         "text": "Messenger for children",
         "currentLikes": 2,
         "isLiked": false,
-        "commentsCount": 2
+        "creationDate": "2022-05-22"
     },
     {
-        "articleId": 72,
+        "postId": 72,
+        "author": "Sofa",
+        "parentPostId": 0,
         "title": "Me",
         "text": "Best student",
         "currentLikes": 999,
         "isLiked": false,
-        "commentsCount": 0
+        "creationDate": "2022-05-22"
     },
     {
-        "articleId": 33,
+        "postId": 33,
+        "author": "Sofa",
+        "parentPostId": 0,
         "title": "Item",
         "text": "Some other item",
         "currentLikes": 0,
         "isLiked": false,
-        "commentsCount": 2
+        "creationDate": "2022-05-22"
     },
     {
-        "articleId": 16,
+        "postId": 16,
+        "author": "Sofa",
+        "parentPostId": 0,
         "title": "Real article",
         "text": "Real text for real article",
         "currentLikes": 11,
         "isLiked": false,
-        "commentsCount": 1
+        "creationDate": "2022-05-22"
+    },
+
+
+    {
+        "postId": 100,
+        "author": "Sofa",
+        "parentPostId": 33,
+        "title": "",
+        "text": "Comment comment comment",
+        "currentLikes": 4,
+        "isLiked": false,
+        "creationDate": "2022-05-22"
+    },
+    {
+        "postId": 101,
+        "author": "Ivan",
+        "parentPostId": 5,
+        "title": "",
+        "text": "Random text from Ivan",
+        "currentLikes": 4,
+        "isLiked": false,
+        "creationDate": "2022-05-25"
+    },
+    {
+        "postId": 102,
+        "author": "Oleg",
+        "parentPostId": 5,
+        "title": "",
+        "text": "Long text long text long text long text long text long text",
+        "currentLikes": 8,
+        "isLiked": false,
+        "creationDate": "2022-05-22"
+    },
+    {
+        "postId": 103,
+        "author": "Roman",
+        "parentPostId": 33,
+        "title": "Com",
+        "text": "Short text",
+        "currentLikes": 4,
+        "isLiked": false,
+        "creationDate": "2022-05-25"
+    },
+    {
+        "postId": 104,
+        "author": "Bob",
+        "parentPostId": 16,
+        "title": "Com",
+        "text": "Short text from Bob",
+        "currentLikes": 4,
+        "isLiked": false,
+        "creationDate": "2022-05-22"
+    },
+    {
+        "postId": 105,
+        "author": "Roman",
+        "parentPostId": 11,
+        "title": "",
+        "text": "Short text from Frank + random random random",
+        "currentLikes": 4,
+        "isLiked": false,
+        "creationDate": "2022-05-22"
     }
 ]
