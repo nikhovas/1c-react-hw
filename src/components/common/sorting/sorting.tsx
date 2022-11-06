@@ -2,8 +2,8 @@ import Select from 'react-select'
 
 import styles from './sorting.module.scss'
 
-export const dateSort = { value: 'date', label: 'по дате' }
-export const likesSort = { value: 'likes', label: 'по лайкам' }
+export const dateSort = {value: 'date', label: 'по дате'}
+export const likesSort = {value: 'likes', label: 'по лайкам'}
 export const sortingOptions = [dateSort, likesSort]
 
 function getOptions(key: string) {

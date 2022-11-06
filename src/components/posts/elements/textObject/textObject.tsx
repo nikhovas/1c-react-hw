@@ -14,7 +14,12 @@ export interface TextObjectGeneratorProps {
     topDivClass: string
 }
 
-export default function TextObject({internalProps, editObjectType, viewObjectType, topDivClass}: TextObjectGeneratorProps) {
+export default function TextObject({
+                                       internalProps,
+                                       editObjectType,
+                                       viewObjectType,
+                                       topDivClass
+                                   }: TextObjectGeneratorProps) {
     const [isEditMode, setEditMode] = useState<boolean>(false);
     const [text, setText] = useState<string>(internalProps.initialText)
 
