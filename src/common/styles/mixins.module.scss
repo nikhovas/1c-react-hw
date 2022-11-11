@@ -1,0 +1,59 @@
+@import 'vars.module';
+
+@mixin body-text($size) {
+  font-size: map-get($body-font-size, $size);
+}
+
+@mixin title-text($size) {
+  font-weight: bold;
+  font-size: map-get($title-font-size, $size);
+}
+
+@mixin div-style($size) {
+  margin: map-get($div-margins, $size);
+  padding: map-get($div-paddings, $size);
+
+  & h2 {
+    @include title-text($size);
+  }
+
+  & p {
+    @include body-text($size);
+  }
+}
+
+@mixin div-default-borders($size) {
+  border-radius: map-get($div-border-radius, $size);
+  border-width: 1px;
+  border-style: solid;
+}
+
+@mixin div-upper-border() {
+  border-style: solid;
+  border-top-width: 1px;
+  border-bottom-width: 0;
+  border-left-width: 0;
+  border-right-width: 0;
+}
+
+@mixin div-colors($color) {
+  background-color: map-get($background-color, $color);
+  border-color: map-get($border-color, $color);
+}
+
+@mixin div-inputs() {
+  & input, textarea {
+    display: inline-block;
+    padding-left: 5px;
+    padding-roght: 5px;
+    line-height: 200%;
+  }
+}
+
+@mixin button() {
+  display: inline-block;
+  @include div-style("medium");
+  @include div-default-borders("medium");
+  @include body-text("medium");
+  @include div-colors("default");
+}

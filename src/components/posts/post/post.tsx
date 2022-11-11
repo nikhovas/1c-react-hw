@@ -1,11 +1,10 @@
-import Like from "./like";
-import styles from './post.module.css'
-import Comment from "./comment";
+import Like from "./like/like";
+import styles from './post.module.scss'
+import Comment from "./comments/comment/comment";
 import {useEffect, useState} from "react";
-import NewComment from "./newComment";
-import defaultStyles from './common.module.css'
-import ArticleData from "../structs/article";
-import CommentData from "../structs/comment";
+import NewComment from "./comments/newComment/newComment";
+import ArticleData from "../../../structs/article";
+import CommentData from "../../../structs/comment";
 
 export interface PostCommentsProps {
     postData: ArticleData
@@ -43,7 +42,7 @@ function PostComments(props: PostCommentsProps) {
 
     if (!commentsLoaded) {
         return (
-            <div className={defaultStyles.blockUpperSeparator}>
+            <div className={styles.blockUpperSeparator}>
                 Коментарии загружаются
             </div>
         )
@@ -77,14 +76,15 @@ function Post(props: PostProps) {
         <div key={props.postData.articleId} className={styles.post}>
             <h2>{props.postData.title}</h2>
             <p>{props.postData.text}</p>
-            <div >
+            <div>
                 <Like
                     count={props.postData.currentLikes}
                     id={props.postData.articleId}
                     likeCallback={props.likeCallback}
                     isLiked={props.postData.isLiked}
                 />
-                <div className={defaultStyles.button} onClick={() => setAreCommentsShown(!areCommentsShown)} style={{marginLeft: 10}}>
+                <div className={styles.button} onClick={() => setAreCommentsShown(!areCommentsShown)}
+                     style={{marginLeft: 10}}>
                     {areCommentsShown ? "Скрыть комментарии" : "Показать комментарии"}
                 </div>
             </div>

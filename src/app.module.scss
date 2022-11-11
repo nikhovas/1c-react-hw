@@ -1,0 +1,30 @@
+@import "./common/styles/mixins.module.scss";
+
+.app {
+  display: grid;
+  @media screen and (max-width: 900px) {
+    grid-template-areas:
+      'menu'
+      'content';
+    grid-template-rows: 5rem auto;
+    grid-row-gap: 10px;
+  }
+  @media screen and (min-width: 901px) {
+    grid-template-areas:
+      'menu   content';
+    grid-template-columns: 12rem 1fr;
+  }
+}
+
+.side {
+  grid-area: menu;
+}
+
+.menu {
+  @include div-style("big");
+  @include div-colors("default");
+}
+
+.app-internal {
+  grid-area: content;
+}
