@@ -1,9 +1,13 @@
 $background-color: ("default": rgb(255, 255, 255), "pink": rgb(244, 143, 177));
 $border-color: ("default": rgb(211, 211, 211), "pink": rgb(240, 98, 146));
 
-$div-margins: ("big": 10px, "medium": 0px, "small": 0px);
 $div-paddings: ("big": 10px, "medium": 8px, "small": 6px);
-$div-border-radius: ("big": 15px, "medium": 10px, "small": 5px);
+$div-border-radius: ("big": 15px, "medium": 5px, "small": 2px);
 
 $title-font-size: ("big": 36px, "medium": 28px, "small": 20px);
 $body-font-size: ("big": 18px, "medium": 15px, "small": 12px);
+$body-text-color: ("big": rgb(0, 0, 0), "medium": rgb(0, 0, 0), "small": rgb(100, 100, 100));
+
+$grid-spaces: ("big": 10px, "medium": 7px, "small": 5px);
+
+$default-grid-space: 10px;

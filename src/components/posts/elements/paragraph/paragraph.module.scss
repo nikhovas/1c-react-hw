@@ -1,0 +1,18 @@
+@import "../../../../common/styles/mixins.module";
+
+.paragraph {
+  .button {
+    @include button();
+  }
+
+  & textarea {
+    @include body-text("big");
+    @include div-colors("default");
+    @include div-default-borders("small");
+    display: inline-block;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  grid-area: body;
+}

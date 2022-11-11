@@ -1,0 +1,12 @@
+@import "../../../../common/styles/mixins.module";
+
+.button {
+  @include button();
+}
+
+.buttons {
+  @include setupGrid("small");
+  grid-auto-flow: column;
+  grid-template-rows: 1fr;
+  justify-content: start;
+}

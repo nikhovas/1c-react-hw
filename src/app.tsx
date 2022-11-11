@@ -1,40 +1,18 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 
-import Post from './components/posts/post/post';
-import NewPost from './components/posts/newPost/newPost';
-
+import PostComments from './components/posts/posts';
 import styles from './app.module.scss';
-import {getComments} from "./loaders/comments";
 import {getArticles} from "./loaders/articles";
-import ArticleData from "./structs/article";
+import Sorting, {dateSort} from "./components/common/sorting/sorting";
 
 function App() {
-    let currentCommentId = 100
-    let newCommentIdGetter = () => {
-        currentCommentId += 1
-        return currentCommentId
+    let currentPostId = 200
+    let newPostIdGetter = () => {
+        currentPostId += 1
+        return currentPostId
     }
 
-    const [articles, setArticles] = useState<ArticleData[]>([])
-    const [articlesLoaded, setArticlesLoaded] = useState<boolean>(false)
-    useEffect(() => {
-        getArticles().then((articles: ArticleData[]) => {
-            setArticles(articles)
-            setArticlesLoaded(true)
-        })
-    })
-
-    const likeCallback = function (key: number) {
-        console.log(key)
-    }
-
-    if (!articlesLoaded) {
-        return (
-            <div>
-                Посты загрыжаются
-            </div>
-        )
-    }
+    const [sorting, setSorting] = useState<string>(dateSort.value)
 
     return (
         <div className={styles.app}>
@@ -45,18 +23,18 @@ function App() {
                     </p>
                 </div>
             </div>
+            <div className={styles.header}>
+                <Sorting setSortingValue={setSorting} inputValue={sorting}/>
+            </div>
             <div className={styles.appInternal}>
-                {articles.map(article => (
-                    <Post
-                        postData={article}
-                        likeCallback={likeCallback}
-                        key={article.articleId}
-                        commentsGetter={getComments}
-                        newCommentIdGetter={newCommentIdGetter}
-                    />
-                ))}
-                <NewPost>
-                </NewPost>
+                <PostComments
+                    parentPostId={0}
+                    commentsGetter={getArticles}
+                    newPostIdGetter={newPostIdGetter}
+                    sorting={sorting}
+                    currentDepth={0}
+                    maxDepth={1}
+                />
             </div>
         </div>
     );
