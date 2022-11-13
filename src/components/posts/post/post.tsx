@@ -1,4 +1,4 @@
-import {useState} from "react";
+import {useCallback, useEffect, useState} from "react";
 import classnames from "classnames/bind";
 import {connect} from "react-redux";
 import {useNavigate, useParams} from "react-router";
@@ -36,30 +36,36 @@ export interface PostProps extends WrappedPostWithMappedStateProps {
 }
 
 function Post(
-    {postData, deletePost, editPost, loadPost, setSorting, extendedMode, currentDepth, maxDepth}: PostProps
+    {postId, postData, deletePost, editPost, loadPost, setSorting, extendedMode, currentDepth, maxDepth}: PostProps
 ) {
     if (postData === undefined) {
         loadPost()
     }
 
+    useEffect(() => {
+        if (extendedMode) {
+            console.log(`Opened post with id ${postId}`, postData)
+        }
+    }, [extendedMode, postId, postData])
+
     const [areCommentsShown, setAreCommentsShown] = useState<boolean>(false);
     let navigate = useNavigate();
 
-    const likeCallback = (key: number) => editPost({
+    const likeCallback = useCallback((key: number) => editPost({
         ...postData!.articleData!,
         isLiked: postData!.articleData!.currentLikes < key,
         currentLikes: key,
-    })
+    }), [editPost, postData])
 
-    const setText = (data: string) => editPost({
+    const setText = useCallback((data: string) => editPost({
         ...postData!.articleData!,
         text: data,
-    })
+    }), [editPost, postData])
 
-    const setTitle = (data: string) => editPost({
+    const setTitle = useCallback((data: string) => editPost({
         ...postData!.articleData!,
         title: data,
-    })
+    }), [editPost, postData])
 
     if (postData?.articleData !== undefined) {
         let internalPost = postData!.articleData!
@@ -81,6 +87,9 @@ function Post(
                 break
             case LoadingStates.ADDING:
                 indicatorButtonText = 'Добавление...'
+                break
+            case LoadingStates.ERROR:
+                indicatorButtonText = 'Произошла ошибка'
                 break
             default:
                 indicatorButtonText = 'Удалить'

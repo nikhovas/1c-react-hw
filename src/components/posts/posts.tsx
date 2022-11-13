@@ -25,7 +25,7 @@ function PostComments(
     {parentPostId, comments, commentsGetter, currentDepth, maxDepth}: PostCommentsProps
 ) {
     if (comments === undefined) {
-        commentsGetter!()
+        commentsGetter()
     }
 
     if (comments === undefined) {

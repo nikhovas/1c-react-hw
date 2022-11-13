@@ -1,5 +1,5 @@
 import classnames from 'classnames/bind'
-import React, {useState} from "react";
+import React from "react";
 
 import styles from './like.module.scss'
 
@@ -12,19 +12,9 @@ export interface LikeProps {
     likeCallback: (key: number) => void
 }
 
-function Like(props: LikeProps) {
-    const [isLiked, setIsLiked] = useState<boolean>(props.isLiked)
-    const [count, setCount] = useState<number>(props.count)
-
+function Like({id, isLiked, count, likeCallback}: LikeProps) {
     const likeClick = () => {
-        props.likeCallback(props.id)
-        setIsLiked(!isLiked)
-
-        if (isLiked) {
-            setCount(count - 1)
-        } else {
-            setCount(count + 1)
-        }
+        likeCallback(id)
     }
 
     return (
