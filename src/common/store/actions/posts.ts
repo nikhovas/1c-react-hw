@@ -13,7 +13,33 @@ export enum ActionState {
 
 export interface BaseActionContext {
     actionState: ActionState
+    errorData?: string
 }
+
+const emulateServer = (resolve: any, reject: any, rsp: any) => {
+    setTimeout(() => {
+        if (Math.random() < 0.1) {
+            reject('some error text')
+        } else {
+            resolve(rsp)
+        }
+    }, ARTICLES_LOAD_DURATION)
+}
+
+const emulatedPromise = (rsp: any, params: object) => {
+    return new Promise((resolve, reject) => {
+        emulateServer(resolve, reject, rsp)
+    }).catch(_err => {
+        console.error([
+            `[${new Date().toISOString()}]`,
+            `Error occurred while getting data from server.`,
+            `Error text: ${_err}`,
+            `Input:`].join('\n'), params,
+        )
+        throw _err
+    })
+}
+
 
 
 export interface LoadComments extends BaseActionContext {
@@ -30,17 +56,25 @@ export const startLoadComments = (parentPostId: number) => {
             parentPostId: parentPostId,
         })
 
-        new Promise(resolve => {
-            const rsp = articles.filter((comment: ArticleData) => comment.parentPostId === parentPostId)
-            setTimeout(() => resolve(rsp), ARTICLES_LOAD_DURATION)
-        }).then(_rsp => {
+        emulatedPromise(
+            articles.filter((comment: ArticleData) => comment.parentPostId === parentPostId), {
+                parentPostId: parentPostId,
+            }
+        ).then(_rsp => {
             let rsp = _rsp as ArticleData[]
-
             dispatch({
                 actionState: ActionState.SUCCESS,
                 type: PostActions.loadComments,
                 parentPostId: parentPostId,
                 comments: rsp,
+            })
+        }).catch(_err => {
+            const err = _err as string
+            dispatch({
+                actionState: ActionState.ERROR,
+                type: PostActions.loadComments,
+                parentPostId: parentPostId,
+                errorData: err,
             })
         })
     }
@@ -79,21 +113,23 @@ export const startGetPost = (postId: number) => {
             postId: postId,
         })
 
-        new Promise(resolve => {
-            let res: ArticleData | undefined = undefined
-            const rsp = articles.filter((post: ArticleData) => post.postId === postId)
-            if (rsp.length !== 0) {
-                res = rsp[0]
-            }
-            setTimeout(() => resolve(res), ARTICLES_LOAD_DURATION)
-        }).then(_rsp => {
-            let rsp = _rsp as (ArticleData | undefined)
-
+        emulatedPromise(
+            articles.filter((post: ArticleData) => post.postId === postId), {postId: postId}
+        ).then(_rsp => {
+            let rsp = _rsp as ArticleData[]
             dispatch({
                 actionState: ActionState.SUCCESS,
                 type: PostActions.loadPost,
-                post: rsp,
+                post: rsp.length > 0 ? rsp[0] : undefined,
                 postId: postId,
+            })
+        }).catch(_err => {
+            const err = _err as string
+            dispatch({
+                actionState: ActionState.ERROR,
+                type: PostActions.loadPost,
+                postId: postId,
+                errorData: err,
             })
         })
     }
@@ -113,15 +149,20 @@ export const startAddPost = (post: ArticleData) => {
             post: post,
         })
 
-        new Promise(resolve => {
-            setTimeout(() => resolve(post), ARTICLES_LOAD_DURATION)
-        }).then(_rsp => {
+        emulatedPromise(post, {post: post}).then(_rsp => {
             let rsp = _rsp as ArticleData
-
             dispatch({
                 actionState: ActionState.SUCCESS,
                 type: PostActions.addPost,
                 post: rsp,
+            })
+        }).catch(_err => {
+            const err = _err as string
+            dispatch({
+                actionState: ActionState.ERROR,
+                type: PostActions.addPost,
+                post: post,
+                errorData: err,
             })
         })
     }
@@ -141,15 +182,20 @@ export const startEditPost = (post: ArticleData) => {
             post: post,
         })
 
-        new Promise(resolve => {
-            setTimeout(() => resolve(post), ARTICLES_LOAD_DURATION)
-        }).then(_rsp => {
+        emulatedPromise(post, {post: post}).then(_rsp => {
             let rsp = _rsp as ArticleData
-
             dispatch({
                 actionState: ActionState.SUCCESS,
                 type: PostActions.editPost,
                 post: rsp,
+            })
+        }).catch(_err => {
+            const err = _err as string
+            dispatch({
+                actionState: ActionState.ERROR,
+                type: PostActions.editPost,
+                post: post,
+                errorData: err,
             })
         })
     }
@@ -169,13 +215,20 @@ export const startDeletePost = (postId: number) => {
             postId: postId,
         })
 
-        new Promise(resolve => {
-            setTimeout(() => resolve(postId), ARTICLES_LOAD_DURATION)
-        }).then(_rsp => {
+        emulatedPromise(postId, {postId: postId}).then(_rsp => {
+            const postId = _rsp as number
             dispatch({
                 actionState: ActionState.SUCCESS,
                 type: PostActions.deletePost,
                 postId: postId,
+            })
+        }).catch(_err => {
+            const err = _err as string
+            dispatch({
+                actionState: ActionState.ERROR,
+                type: PostActions.deletePost,
+                postId: postId,
+                errorData: err,
             })
         })
     }

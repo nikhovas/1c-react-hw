@@ -11,7 +11,6 @@ import {RouterPost} from "./components/posts/post/post";
 import {startSortComments} from "./common/store/actions/posts";
 import {Sorting as TSorting} from "./structs/storedArticle";
 
-
 const store = configureStore({
     reducer: rootReducer,
     middleware: (getDefaultMiddleware) => getDefaultMiddleware({

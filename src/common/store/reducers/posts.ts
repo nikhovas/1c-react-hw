@@ -205,7 +205,6 @@ export const postReducers = (state: PostsState = initialState, action: PostActio
                         postId: action.post.postId,
                         loadState: LoadingStates.LOADED,
                     })
-                    console.log(state.links)
                     break
                 case ActionState.ERROR:
                     updatePostWithParent(state.links, {
