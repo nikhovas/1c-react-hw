@@ -1,18 +1,20 @@
-import styles from './newPost.module.scss'
 import React, {useState} from "react";
-import ArticleData from "../../../structs/article";
+import {connect} from "react-redux";
+
+import styles from './newPost.module.scss'
 import SmallText from "../elements/smallText/smallText";
 import TitleInput from "../elements/title/titleInput";
 import ParagraphInput from "../elements/paragraph/paragraphInput";
 import SmallTextInput from "../elements/smallText/smallTextInput";
+import {startAddPost} from "../../../common/store/actions/posts";
+import {PostWithComments} from "../../../structs/storedArticle";
 
 export interface NewArticleProps {
-    newPostIdGetter: () => number
-    addNewPostCallback: (commentData: ArticleData) => void
+    addNewPostCallback?: (post: PostWithComments) => void
     parentPostId: number
 }
 
-function NewArticle({newPostIdGetter, addNewPostCallback, parentPostId}: NewArticleProps) {
+function NewArticle({addNewPostCallback, parentPostId}: NewArticleProps) {
     const [author, newAuthor] = useState<string>("")
     const [title, newTitle] = useState<string>("")
     const [text, newText] = useState<string>("")
@@ -24,8 +26,6 @@ function NewArticle({newPostIdGetter, addNewPostCallback, parentPostId}: NewArti
             return
         }
 
-        console.log("here2")
-
         const savedAuthor = author
         const savedTitle = title
         const savedText = text
@@ -34,8 +34,8 @@ function NewArticle({newPostIdGetter, addNewPostCallback, parentPostId}: NewArti
         newTitle("")
         newText("")
 
-        addNewPostCallback({
-            postId: newPostIdGetter(),
+        addNewPostCallback!({
+            postId: 0,
             parentPostId: parentPostId,
             author: savedAuthor,
             title: savedTitle,
@@ -43,6 +43,7 @@ function NewArticle({newPostIdGetter, addNewPostCallback, parentPostId}: NewArti
             currentLikes: 0,
             isLiked: false,
             creationDate: currentDate,
+            comments: undefined,
         })
     }
 
@@ -63,4 +64,8 @@ function NewArticle({newPostIdGetter, addNewPostCallback, parentPostId}: NewArti
     )
 }
 
-export default NewArticle
+const mapDispatchToProps = (dispatch: any) => ({
+    addNewPostCallback: (post: PostWithComments) => dispatch(startAddPost(post)),
+})
+
+export default connect(null, mapDispatchToProps)(NewArticle)

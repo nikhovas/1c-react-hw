@@ -1,18 +1,19 @@
 import Select from 'react-select'
 
 import styles from './sorting.module.scss'
+import {Sorting as TSorting} from "../../../structs/storedArticle";
 
-export const dateSort = {value: 'date', label: 'по дате'}
-export const likesSort = {value: 'likes', label: 'по лайкам'}
+export const dateSort = {value: TSorting.BY_DATE, label: 'по дате'}
+export const likesSort = {value: TSorting.BY_LIKES, label: 'по лайкам'}
 export const sortingOptions = [dateSort, likesSort]
 
-function getOptions(key: string) {
+function getOptions(key: TSorting) {
     return sortingOptions.filter((elem) => elem.value === key)[0]
 }
 
 export interface SortingProps {
-    setSortingValue: (value: string) => void
-    inputValue: string
+    setSortingValue: (value: TSorting) => void
+    inputValue: TSorting
 }
 
 const customStyles = {

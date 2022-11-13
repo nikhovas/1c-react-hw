@@ -30,6 +30,7 @@
 
 @mixin button() {
   display: inline-block;
+  text-decoration: none;
   @include div-style("medium");
   @include div-default-borders("medium");
   @include body-text("medium");

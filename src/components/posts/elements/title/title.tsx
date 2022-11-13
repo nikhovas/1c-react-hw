@@ -1,4 +1,5 @@
 import React from "react";
+
 import styles from "./title.module.scss";
 import TextObject, {TextObjectProps} from "../textObject/textObject";
 import {TitleInputRaw} from "./titleInput";

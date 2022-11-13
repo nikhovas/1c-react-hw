@@ -1,4 +1,5 @@
 import React, {useState} from "react";
+
 import styles from "./textObject.module.scss";
 
 export interface TextObjectProps {
@@ -14,12 +15,8 @@ export interface TextObjectGeneratorProps {
     topDivClass: string
 }
 
-export default function TextObject({
-                                       internalProps,
-                                       editObjectType,
-                                       viewObjectType,
-                                       topDivClass
-                                   }: TextObjectGeneratorProps) {
+export default function TextObject(
+    {internalProps, editObjectType, viewObjectType, topDivClass}: TextObjectGeneratorProps) {
     const [isEditMode, setEditMode] = useState<boolean>(false);
     const [text, setText] = useState<string>(internalProps.initialText)
 
@@ -62,7 +59,7 @@ export default function TextObject({
             extraProps = {onClick: () => setEditMode(true)}
         }
 
-        let viewObject = React.cloneElement(
+        return React.cloneElement(
             viewObjectType,
             {
                 ...viewObjectType.props,
@@ -70,7 +67,5 @@ export default function TextObject({
             },
             [text],
         )
-
-        return viewObject
     }
 }

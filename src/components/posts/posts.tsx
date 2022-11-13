@@ -1,82 +1,83 @@
+import {connect} from "react-redux";
+
 import styles from './posts.module.scss'
-import {useEffect, useState} from "react";
-import ArticleData from "../../structs/article";
 import NewPost from "./newPost/newPost";
 import Post from "./post/post"
-import {dateSort, likesSort} from "../common/sorting/sorting";
+import {CommentsData, LoadingStates} from "../../structs/storedArticle";
+import {startLoadComments} from "../../common/store/actions/posts";
+import {PostsState} from "../../common/store/reducers/posts";
 
-export interface PostCommentsProps {
+export interface WrappedPostCommentsProps {
     parentPostId: number
-    commentsGetter: (postId: number) => Promise<ArticleData[]>
-    newPostIdGetter: () => number
-    sorting: string
     currentDepth: number
     maxDepth: number
 }
 
-export default function PostComments(
-    {parentPostId, commentsGetter, newPostIdGetter, sorting, currentDepth, maxDepth}: PostCommentsProps
+export interface WrappedPostCommentsPropsWithMappedState extends WrappedPostCommentsProps {
+    comments?: CommentsData
+}
+
+export interface PostCommentsProps extends WrappedPostCommentsPropsWithMappedState {
+    commentsGetter: () => void
+}
+
+function PostComments(
+    {parentPostId, comments, commentsGetter, currentDepth, maxDepth}: PostCommentsProps
 ) {
-    const [comments, changeComments] = useState<ArticleData[]>([])
-    const [commentsLoaded, setCommentsLoaded] = useState<boolean>(false);
-
-    useEffect(() => {
-        commentsGetter(parentPostId).then((comments: ArticleData[]) => {
-            changeComments(comments)
-            setCommentsLoaded(true)
-        })
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
-
-    const addNewCommentCallback = (commentData: ArticleData) => {
-        console.log("here")
-        changeComments([...comments, commentData])
+    if (comments === undefined) {
+        commentsGetter!()
     }
 
-    const deleteCommentCallback = (commentId: number) => {
-        const newComments = comments.filter((comment) => comment.postId !== commentId)
-        changeComments(newComments)
-    }
-
-    let sortedComments = [...comments]
-
-    switch (sorting) {
-        case dateSort.value:
-            sortedComments = sortedComments.sort((l, r) => l.creationDate < r.creationDate ? 1 : -1)
-            break
-        case likesSort.value:
-            sortedComments = sortedComments.sort((l, r) => l.currentLikes < r.currentLikes ? 1 : -1)
-            break
-    }
-
-    if (!commentsLoaded) {
+    if (comments === undefined) {
         return (
             <div className={styles.blockUpperSeparator}>
                 Объекты загружаются
             </div>
         )
-    } else {
-        return (
-            <div className={styles.comments}>
-                {
-                    sortedComments.map((comment: ArticleData) => {
-                        return <Post
-                            key={comment.postId}
-                            postData={comment}
-                            deletePostCallback={deleteCommentCallback}
-                            commentsGetter={commentsGetter}
-                            newPostIdGetter={newPostIdGetter}
+    }
+    switch (comments?.loadState) {
+        case LoadingStates.LOADING:
+            return (
+                <div className={styles.blockUpperSeparator}>
+                    Объекты загружаются
+                </div>
+            )
+        case LoadingStates.ERROR:
+            return (
+                <div className={styles.blockUpperSeparator}>
+                    Произошла ошибка
+                </div>
+            )
+        case LoadingStates.LOADED:
+            return (
+                <div className={styles.comments}>
+                    {
+                        comments.data!.map(comment => <Post
+                            key={comment}
+                            postId={comment}
+                            extendedMode={false}
                             currentDepth={currentDepth}
                             maxDepth={maxDepth}
-                        />
-                    })
-                }
-                <NewPost
-                    newPostIdGetter={newPostIdGetter}
-                    addNewPostCallback={addNewCommentCallback}
-                    parentPostId={parentPostId}
-                />
-            </div>
-        )
+                        />)
+                    }
+                    <NewPost parentPostId={parentPostId}/>
+                </div>
+            )
+        default:
+            return (
+                <div className={styles.blockUpperSeparator}>
+                    Необработанное состояние
+                </div>
+            )
     }
 }
+
+const mapStateToProps = (state: { posts: PostsState }, props: WrappedPostCommentsProps) => ({
+    comments: state.posts.links.get(props.parentPostId)?.articleData?.comments,
+})
+
+const mapDispatchToProps = (dispatch: any, props: WrappedPostCommentsPropsWithMappedState) => ({
+    commentsGetter: () => dispatch(startLoadComments(props.parentPostId)),
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(PostComments)
